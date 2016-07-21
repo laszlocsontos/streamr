@@ -90,3 +90,6 @@ ENV/
 
 # Sublime project files
 *.sublime-project*
+
+# IDEA project files
+.idea
