@@ -1,5 +1,6 @@
 import json
 import urllib2
+import sys
 from streamr import url
 from time import sleep
 
@@ -66,8 +67,12 @@ class Vimeo:
         print "url=%s, status=%s, retry=%d" % (url, he.code, retry)
         last_exception = he
         sleep(retry + 1)
+      except urllib2.URLError, ue:
+        print "url=%s, reason=%s, retry=%d" % (url, ue.reason, retry)
+        last_exception = ue
+        sleep(retry + 1)
       except Exception, e:
-        print("Unexpected error:", e.message)
+        print "Unexpected error. url=%s, message=%s" % (url, sys.exc_info()[0])
         last_exception = e
         sleep(retry + 1)
       finally:
