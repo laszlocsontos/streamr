@@ -82,7 +82,7 @@ def download_video(master_url, path_to_save):
   best_video_id = vimeo.get_best_video_id()
 
   try:
-    video_file = open("%s/%s.mp4" % (path_to_save, best_video_id), "wb")
+    video_file = open("%s/%s.mp4" % (path_to_save, vimeo.get_clip_id()), "wb")
     for index in range(0, vimeo.get_segment_count(best_video_id) + 1):
       video_file.write(vimeo.get_segment_data(best_video_id, index))
   finally:
