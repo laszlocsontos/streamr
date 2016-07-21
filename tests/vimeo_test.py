@@ -2,8 +2,8 @@ import unittest
 from streamr import vimeo
 
 MASTER_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248/video/526296221,526296236,526296231,526296220/master.json"
-BASE_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248/video"
-STREAM_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248/video/526296221"
+BASE_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248"
+STREAM_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248/video/526296221/chop/"
 
 class VimeoTest(unittest.TestCase):
 

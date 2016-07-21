@@ -1,12 +1,12 @@
 import json
 import urllib2
 import urlparse
-
+from streamr import url
 
 class Vimeo:
 
   def __init__(self, master_url, master_json=None):
-    self.master_url = urlparse.urlsplit(master_url)
+    self.master_url = url.Url(master_url)
 
     if master_json:
       self.master_data = json.loads(master_json)
@@ -17,8 +17,10 @@ class Vimeo:
       finally:
         response.close()
 
-    path = "/".join(self.master_url[2].split("/")[:-2])
-    self.base_url = urlparse.urlunsplit((self.master_url[0], self.master_url[1], path, self.master_url[3], self.master_url[4]))
+    self.base_url = self.master_url\
+      .remove_last_path_element()\
+      .add_path(self.master_data["base_url"], ignore_trailing_slash=True)\
+      .get_url()
 
   def get_base_url(self):
     return self.base_url
@@ -35,7 +37,7 @@ class Vimeo:
 
   def get_stream_url(self, video_id):
     video = self._get_video(video_id)
-    return "/".join([self.get_base_url(), str(video["id"])]) if video else None
+    return url.Url(self.base_url).add_path(video["base_url"]).get_url() if video else None
 
   def get_segment_count(self, video_id):
     video = self._get_video(video_id)
