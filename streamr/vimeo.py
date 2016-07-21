@@ -32,10 +32,10 @@ class Vimeo:
   def get_clip_id(self):
     return self.master_data["clip_id"]
 
-  def get_stream_count(self):
+  def get_video_count(self):
     return len(self.master_data["video"])
 
-  def get_stream_url(self, video_id):
+  def get_video_url(self, video_id):
     video = self._get_video(video_id)
     return url.Url(self.base_url).add_path(video["base_url"]).get_url() if video else None
 

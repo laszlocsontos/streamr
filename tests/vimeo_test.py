@@ -3,7 +3,7 @@ from streamr import vimeo
 
 MASTER_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248/video/526296221,526296236,526296231,526296220/master.json"
 BASE_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248"
-STREAM_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248/video/526296221/chop/"
+VIDEO_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469098042-b3a140ccbdc17f186984f9ac9ac0a9d06b940c83/165473248/video/526296221/chop/"
 
 class VimeoTest(unittest.TestCase):
 
@@ -20,11 +20,11 @@ class VimeoTest(unittest.TestCase):
   def test_get_clip_id(self):
     self.assertEqual(165473248, self.vimeo.get_clip_id())
 
-  def test_get_stream_count(self):
-    self.assertEqual(4, self.vimeo.get_stream_count())
+  def test_get_video_count(self):
+    self.assertEqual(4, self.vimeo.get_video_count())
 
-  def test_get_stream_url(self):
-    self.assertEqual(STREAM_URL, self.vimeo.get_stream_url(526296221))
+  def test_get_video_url(self):
+    self.assertEqual(VIDEO_URL, self.vimeo.get_video_url(526296221))
 
   def test_get_segment_count(self):
     self.assertEqual(16, self.vimeo.get_segment_count(526296221))
