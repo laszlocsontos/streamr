@@ -1,4 +1,3 @@
-import base64
 import json
 import urllib2
 from streamr import url
@@ -11,11 +10,7 @@ class Vimeo:
     if master_json:
       self.master_data = json.loads(master_json)
     else:
-      try:
-        response = urllib2.urlopen(self.master_url.geturl())
-        self.master_data = json.loads(response.read())
-      finally:
-        response.close()
+      self.master_data = json.loads(self._read_url(self.master_url.get_url()))
 
     self.base_url = self.master_url\
       .remove_last_path_element()\
@@ -36,10 +31,6 @@ class Vimeo:
   def get_clip_id(self):
     return self.master_data["clip_id"]
 
-  def get_init_segment(self, video_id):
-    video = self._get_video(video_id)
-    return base64.b64decode(video["init_segment"])
-
   def get_video_count(self):
     return len(self.video_map)
 
@@ -51,11 +42,38 @@ class Vimeo:
     video = self._get_video(video_id)
     return len(video["segments"]) if video else None
 
+  def get_segment_data(self, video_id, segment_index):
+    segment_url = self.get_segment_url(video_id, segment_index)
+    return bytearray(self._read_url(segment_url))
+
   def get_segment_url(self, video_id, segment_index):
     return self.get_video_url(video_id) + "segment-%s.m4s" % segment_index
 
   def _get_video(self, video_id):
     return self.video_map[video_id]
+
+  def _read_url(self, url):
+    response = None
+    try:
+      response = urllib2.urlopen(url)
+      return response.read()
+    except urllib2.HTTPError, e:
+      print "url=%s, status=%s" % (url, e.code)
+    finally:
+      if response is not None:
+        response.close()
+
+
+def download_video(master_url, path_to_save):
+  vimeo = from_url(master_url)
+  best_video_id = vimeo.get_best_video_id()
+
+  try:
+    video_file = open("%s/%s.mp4" % (path_to_save, best_video_id), "wb")
+    for index in range(0, vimeo.get_segment_count(best_video_id) + 1):
+      video_file.write(vimeo.get_segment_data(best_video_id, index))
+  finally:
+    video_file.close()
 
 
 def from_url(master_url):

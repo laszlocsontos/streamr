@@ -24,4 +24,4 @@ class Url:
 
   def get_url(self):
     path = "/".join(self.path_items)
-    return urlparse.urlunsplit((self.url_parts[0], self.url_parts[1], path, self.url_parts[3], self.url_parts[4]))
+    return urlparse.urlunsplit((self.url_parts[0], self.url_parts[1], path, None, None))

@@ -1,7 +1,7 @@
 import unittest
 from streamr import vimeo
 
-MASTER_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469105472-7df5884046f0a1359a35580f2709c8de8dcd286b/165473248/video/526296221,526296236,526296231,526296220/master.json"
+MASTER_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469105472-7df5884046f0a1359a35580f2709c8de8dcd286b/165473248/video/526296221,526296236,526296231,526296220/master.json?base64_init=1"
 BASE_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469105472-7df5884046f0a1359a35580f2709c8de8dcd286b/165473248"
 VIDEO_URL = "https://01-lvl3-skyfire-gce.vimeocdn.com/1469105472-7df5884046f0a1359a35580f2709c8de8dcd286b/165473248/video/526296221/chop/"
 
@@ -14,15 +14,14 @@ class VimeoTest(unittest.TestCase):
     master_json = open("174158118.json").read()
     self.vimeo = vimeo.from_json(MASTER_URL, master_json)
 
+  def test_download_video(self):
+    vimeo.download_video(MASTER_URL, "/tmp")
+
   def test_get_base_url(self):
     self.assertEqual(BASE_URL, self.vimeo.get_base_url())
 
   def test_get_best_video_id(self):
     self.assertEqual(526296220, self.vimeo.get_best_video_id())
-
-  def test_get_init_segment(self):
-    self.assertIsNotNone(self.vimeo.get_init_segment(526296220))
-    self.assertIsNotNone(self.vimeo.get_init_segment(526296221))
 
   def test_get_clip_id(self):
     self.assertEqual(165473248, self.vimeo.get_clip_id())
