@@ -23,6 +23,10 @@ class Vimeo:
   def get_base_url(self):
     return self.base_url
 
+  def get_best_video_id(self):
+    best_video = max(self.master_data["video"], key=(lambda video: video["bitrate"]))
+    return best_video["id"]
+
   def get_clip_id(self):
     return self.master_data["clip_id"]
 

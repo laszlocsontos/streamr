@@ -14,6 +14,9 @@ class VimeoTest(unittest.TestCase):
   def test_get_base_url(self):
     self.assertEqual(BASE_URL, self.vimeo.get_base_url())
 
+  def test_get_best_video_id(self):
+    self.assertEqual(526296220, self.vimeo.get_best_video_id())
+
   def test_get_clip_id(self):
     self.assertEqual(165473248, self.vimeo.get_clip_id())
 
