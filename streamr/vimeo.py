@@ -1,5 +1,6 @@
 import json
 import urllib2
+import ssl
 import sys
 from streamr import url
 from time import sleep
@@ -59,9 +60,14 @@ class Vimeo:
   def _read_url(self, url):
     last_exception = None
     response = None
+
+    sslContext = ssl.create_default_context()
+    sslContext.check_hostname = False
+    sslContext.verify_mode = ssl.CERT_NONE
+
     for retry in range(0, MAX_RETRY_COUNT):
       try:
-        response = urllib2.urlopen(url)
+        response = urllib2.urlopen(url, context=sslContext)
         return response.read()
       except urllib2.HTTPError, he:
         print "url=%s, status=%s, retry=%d" % (url, he.code, retry)
