@@ -1,6 +1,9 @@
 import json
 import urllib2
 from streamr import url
+from time import sleep
+
+MAX_RETRY_COUNT = 10
 
 class Vimeo:
 
@@ -53,15 +56,25 @@ class Vimeo:
     return self.video_map[video_id]
 
   def _read_url(self, url):
+    last_exception = None
     response = None
-    try:
-      response = urllib2.urlopen(url)
-      return response.read()
-    except urllib2.HTTPError, e:
-      print "url=%s, status=%s" % (url, e.code)
-    finally:
-      if response is not None:
-        response.close()
+    for retry in range(0, MAX_RETRY_COUNT):
+      try:
+        response = urllib2.urlopen(url)
+        return response.read()
+      except urllib2.HTTPError, he:
+        print "url=%s, status=%s, retry=%d" % (url, he.code, retry)
+        last_exception = he
+        sleep(retry + 1)
+      except Exception, e:
+        print("Unexpected error:", e.message)
+        last_exception = e
+        sleep(retry + 1)
+      finally:
+        if response is not None:
+          response.close()
+    if last_exception is not None:
+      raise last_exception
 
 
 def download_video(master_url, path_to_save):
