@@ -14,6 +14,7 @@ class VimeoTest(unittest.TestCase):
     master_json = open("174158118.json").read()
     self.vimeo = vimeo.from_json(MASTER_URL, master_json)
 
+  @unittest.skip
   def test_download_video(self):
     vimeo.download_video(MASTER_URL, "/tmp")
 
