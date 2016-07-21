@@ -22,18 +22,22 @@ class Vimeo:
       .add_path(self.master_data["base_url"], ignore_trailing_slash=True)\
       .get_url()
 
+    self.video_map = {}
+    for video in self.master_data["video"]:
+      self.video_map[video["id"]] = video
+
   def get_base_url(self):
     return self.base_url
 
   def get_best_video_id(self):
-    best_video = max(self.master_data["video"], key=(lambda video: video["bitrate"]))
+    best_video = max(self.video_map.values(), key=(lambda video: video["bitrate"]))
     return best_video["id"]
 
   def get_clip_id(self):
     return self.master_data["clip_id"]
 
   def get_video_count(self):
-    return len(self.master_data["video"])
+    return len(self.video_map)
 
   def get_video_url(self, video_id):
     video = self._get_video(video_id)
@@ -44,7 +48,7 @@ class Vimeo:
     return len(video["segments"]) if video else None
 
   def _get_video(self, video_id):
-    return next((video for video in self.master_data["video"] if video["id"] == video_id), None)
+    return self.video_map[video_id]
 
 
 def from_url(master_url):
