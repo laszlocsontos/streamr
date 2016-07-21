@@ -1,6 +1,6 @@
+import base64
 import json
 import urllib2
-import urlparse
 from streamr import url
 
 class Vimeo:
@@ -36,6 +36,10 @@ class Vimeo:
   def get_clip_id(self):
     return self.master_data["clip_id"]
 
+  def get_init_segment(self, video_id):
+    video = self._get_video(video_id)
+    return base64.b64decode(video["init_segment"])
+
   def get_video_count(self):
     return len(self.video_map)
 
@@ -46,6 +50,9 @@ class Vimeo:
   def get_segment_count(self, video_id):
     video = self._get_video(video_id)
     return len(video["segments"]) if video else None
+
+  def get_segment_url(self, video_id, segment_index):
+    return self.get_video_url(video_id) + "segment-%s.m4s" % segment_index
 
   def _get_video(self, video_id):
     return self.video_map[video_id]
