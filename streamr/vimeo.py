@@ -91,13 +91,15 @@ class Vimeo:
 def download_video(master_url, path_to_save):
   vimeo = from_url(master_url)
   best_video_id = vimeo.get_best_video_id()
+  video_file = None
 
   try:
     video_file = open("%s/%s.mp4" % (path_to_save, vimeo.get_clip_id()), "wb")
     for index in range(0, vimeo.get_segment_count(best_video_id) + 1):
       video_file.write(vimeo.get_segment_data(best_video_id, index))
   finally:
-    video_file.close()
+    if video_file is not None:
+      video_file.close()
 
 
 def from_url(master_url):
